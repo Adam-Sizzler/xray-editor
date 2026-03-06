@@ -1,0 +1,757 @@
+diff --git a/app/commander/commander.go b/app/commander/commander.go
+index 9ea71e6e..4cf89044 100644
+--- a/app/commander/commander.go
++++ b/app/commander/commander.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package commander
+ 
+ import (
+diff --git a/app/dispatcher/default.go b/app/dispatcher/default.go
+index c17bfcd1..48370095 100644
+--- a/app/dispatcher/default.go
++++ b/app/dispatcher/default.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package dispatcher
+ 
+ import (
+diff --git a/app/dispatcher/dispatcher_wasm.go b/app/dispatcher/dispatcher_wasm.go
+new file mode 100644
+index 00000000..2a6839ed
+--- /dev/null
++++ b/app/dispatcher/dispatcher_wasm.go
+@@ -0,0 +1,35 @@
++//go:build wasm
++// +build wasm
++
++package dispatcher
++
++import (
++	"context"
++
++	"github.com/xtls/xray-core/common"
++	"github.com/xtls/xray-core/features/policy"
++	"github.com/xtls/xray-core/features/routing"
++	"github.com/xtls/xray-core/features/stats"
++	"github.com/xtls/xray-core/transport"
++)
++
++// DefaultDispatcher is a stub for WASM builds
++type DefaultDispatcher struct {
++	routing.Dispatcher
++}
++
++// WrapLink is a stub function for WASM builds (package-level function)
++func WrapLink(ctx context.Context, policyManager policy.Manager, statsManager stats.Manager, link *transport.Link) *transport.Link {
++	return link
++}
++
++// New creates a new DefaultDispatcher instance for WASM
++func New(ctx context.Context, config *Config) (*DefaultDispatcher, error) {
++	return &DefaultDispatcher{}, nil
++}
++
++func init() {
++	common.Must(common.RegisterConfig((*Config)(nil), func(ctx context.Context, config interface{}) (interface{}, error) {
++		return New(ctx, config.(*Config))
++	}))
++}
+diff --git a/app/dispatcher/fakednssniffer.go b/app/dispatcher/fakednssniffer.go
+index bed90877..78b44066 100644
+--- a/app/dispatcher/fakednssniffer.go
++++ b/app/dispatcher/fakednssniffer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package dispatcher
+ 
+ import (
+diff --git a/app/dispatcher/sniffer.go b/app/dispatcher/sniffer.go
+index d6acf0d9..9d25d124 100644
+--- a/app/dispatcher/sniffer.go
++++ b/app/dispatcher/sniffer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package dispatcher
+ 
+ import (
+diff --git a/app/log/command/command.go b/app/log/command/command.go
+index 2df8ce6d..7c6113fb 100644
+--- a/app/log/command/command.go
++++ b/app/log/command/command.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package command
+ 
+ import (
+diff --git a/app/metrics/metrics.go b/app/metrics/metrics.go
+index 1dc5b2f5..7d0af1c5 100644
+--- a/app/metrics/metrics.go
++++ b/app/metrics/metrics.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package metrics
+ 
+ import (
+diff --git a/app/observatory/command/command.go b/app/observatory/command/command.go
+index f9bb58e3..965bb2b5 100644
+--- a/app/observatory/command/command.go
++++ b/app/observatory/command/command.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package command
+ 
+ import (
+diff --git a/app/observatory/observer.go b/app/observatory/observer.go
+index a6fba3ad..a302c0e0 100644
+--- a/app/observatory/observer.go
++++ b/app/observatory/observer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package observatory
+ 
+ import (
+diff --git a/app/proxyman/command/command.go b/app/proxyman/command/command.go
+index a86f0921..8169e6d8 100644
+--- a/app/proxyman/command/command.go
++++ b/app/proxyman/command/command.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package command
+ 
+ import (
+diff --git a/app/proxyman/handler_wasm.go b/app/proxyman/handler_wasm.go
+new file mode 100644
+index 00000000..fc5dd195
+--- /dev/null
++++ b/app/proxyman/handler_wasm.go
+@@ -0,0 +1,18 @@
++//go:build wasm
++// +build wasm
++
++package proxyman
++
++import (
++	"context"
++
++	"github.com/xtls/xray-core/transport"
++)
++
++// Handler is a stub for WASM builds
++type Handler struct{}
++
++// Process is a stub method for WASM builds
++func (h *Handler) Process(ctx context.Context, link *transport.Link, handler interface{}) error {
++	return nil
++}
+diff --git a/app/proxyman/inbound/always.go b/app/proxyman/inbound/always.go
+index f6a769fb..29b59ba5 100644
+--- a/app/proxyman/inbound/always.go
++++ b/app/proxyman/inbound/always.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package inbound
+ 
+ import (
+diff --git a/app/proxyman/inbound/inbound.go b/app/proxyman/inbound/inbound.go
+index 8e484965..4c4823e7 100644
+--- a/app/proxyman/inbound/inbound.go
++++ b/app/proxyman/inbound/inbound.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package inbound
+ 
+ import (
+diff --git a/app/proxyman/inbound/worker.go b/app/proxyman/inbound/worker.go
+index 42b5c3e9..a9a11847 100644
+--- a/app/proxyman/inbound/worker.go
++++ b/app/proxyman/inbound/worker.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package inbound
+ 
+ import (
+diff --git a/app/proxyman/outbound/handler.go b/app/proxyman/outbound/handler.go
+index 361c88ad..d7ee8f29 100644
+--- a/app/proxyman/outbound/handler.go
++++ b/app/proxyman/outbound/handler.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package outbound
+ 
+ import (
+diff --git a/app/proxyman/outbound/outbound.go b/app/proxyman/outbound/outbound.go
+index 244fcffe..4528e294 100644
+--- a/app/proxyman/outbound/outbound.go
++++ b/app/proxyman/outbound/outbound.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package outbound
+ 
+ import (
+diff --git a/app/proxyman/outbound/outbound_wasm.go b/app/proxyman/outbound/outbound_wasm.go
+new file mode 100644
+index 00000000..1bbf263b
+--- /dev/null
++++ b/app/proxyman/outbound/outbound_wasm.go
+@@ -0,0 +1,28 @@
++//go:build wasm
++// +build wasm
++
++package outbound
++
++import (
++	"context"
++
++	"github.com/xtls/xray-core/app/proxyman"
++	"github.com/xtls/xray-core/common"
++)
++
++// Manager is a stub for WASM builds
++type Manager struct{}
++
++// Handler is a stub for WASM builds
++type Handler struct{}
++
++// New creates a new Manager instance for WASM
++func New(ctx context.Context, config *proxyman.OutboundConfig) (*Manager, error) {
++	return &Manager{}, nil
++}
++
++func init() {
++	common.Must(common.RegisterConfig((*proxyman.OutboundConfig)(nil), func(ctx context.Context, config interface{}) (interface{}, error) {
++		return New(ctx, config.(*proxyman.OutboundConfig))
++	}))
++}
+diff --git a/app/proxyman/outbound/uot.go b/app/proxyman/outbound/uot.go
+index 659f65a1..92af387a 100644
+--- a/app/proxyman/outbound/uot.go
++++ b/app/proxyman/outbound/uot.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package outbound
+ 
+ import (
+diff --git a/app/stats/command/command.go b/app/stats/command/command.go
+index db5283c8..f6b402ac 100644
+--- a/app/stats/command/command.go
++++ b/app/stats/command/command.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package command
+ 
+ import (
+diff --git a/common/buf/readv_reader_wasm.go b/common/buf/readv_reader_wasm.go
+index 30b52e74..03545111 100644
+--- a/common/buf/readv_reader_wasm.go
++++ b/common/buf/readv_reader_wasm.go
+@@ -6,10 +6,12 @@ package buf
+ import (
+ 	"io"
+ 	"syscall"
++
++	"github.com/xtls/xray-core/features/stats"
+ )
+ 
+ const useReadv = false
+ 
+-func NewReadVReader(reader io.Reader, rawConn syscall.RawConn) Reader {
++func NewReadVReader(reader io.Reader, rawConn syscall.RawConn, counter stats.Counter) Reader {
+ 	panic("not implemented")
+ }
+diff --git a/common/common.go b/common/common.go
+index f0134243..6828e457 100644
+--- a/common/common.go
++++ b/common/common.go
+@@ -155,6 +155,9 @@ func GetModuleName(pathToProjectRoot string) (string, error) {
+ 	return moduleName, fmt.Errorf("no `go.mod` file in every parent directory of `%s`", pathToProjectRoot)
+ }
+ 
++// len(syscall.RawSockaddrUnix{}.Path)
++const RawSockAddrUnixLen = 108
++
+ // CloseIfExists call obj.Close() if obj is not nil.
+ func CloseIfExists(obj any) error {
+ 	if obj != nil {
+diff --git a/infra/conf/shadowsocks.go b/infra/conf/shadowsocks.go
+index f12040a6..c408bcf4 100644
+--- a/infra/conf/shadowsocks.go
++++ b/infra/conf/shadowsocks.go
+@@ -3,7 +3,6 @@ package conf
+ import (
+ 	"strings"
+ 
+-	"github.com/sagernet/sing-shadowsocks/shadowaead_2022"
+ 	C "github.com/sagernet/sing/common"
+ 	"github.com/xtls/xray-core/common/errors"
+ 	"github.com/xtls/xray-core/common/protocol"
+@@ -13,6 +12,12 @@ import (
+ 	"google.golang.org/protobuf/proto"
+ )
+ 
++var aeadList = []string{
++	"2022-blake3-aes-128-gcm",
++	"2022-blake3-aes-256-gcm",
++	"2022-blake3-chacha20-poly1305",
++}
++
+ func cipherFromString(c string) shadowsocks.CipherType {
+ 	switch strings.ToLower(c) {
+ 	case "aes-128-gcm", "aead_aes_128_gcm":
+@@ -51,7 +56,7 @@ type ShadowsocksServerConfig struct {
+ func (v *ShadowsocksServerConfig) Build() (proto.Message, error) {
+ 	errors.PrintNonRemovalDeprecatedFeatureWarning("Shadowsocks (with no Forward Secrecy, etc.)", "VLESS Encryption")
+ 
+-	if C.Contains(shadowaead_2022.List, v.Cipher) {
++	if C.Contains(aeadList, v.Cipher) {
+ 		return buildShadowsocks2022(v)
+ 	}
+ 
+@@ -204,7 +209,7 @@ func (v *ShadowsocksClientConfig) Build() (proto.Message, error) {
+ 
+ 	if len(v.Servers) == 1 {
+ 		server := v.Servers[0]
+-		if C.Contains(shadowaead_2022.List, server.Cipher) {
++		if C.Contains(aeadList, server.Cipher) {
+ 			if server.Address == nil {
+ 				return nil, errors.New("Shadowsocks server address is not set.")
+ 			}
+@@ -228,7 +233,7 @@ func (v *ShadowsocksClientConfig) Build() (proto.Message, error) {
+ 
+ 	config := new(shadowsocks.ClientConfig)
+ 	for _, server := range v.Servers {
+-		if C.Contains(shadowaead_2022.List, server.Cipher) {
++		if C.Contains(aeadList, server.Cipher) {
+ 			return nil, errors.New("Shadowsocks 2022 accept no multi servers")
+ 		}
+ 		if server.Address == nil {
+diff --git a/infra/conf/transport_internet.go b/infra/conf/transport_internet.go
+index 4a12761d..3c56fabe 100644
+--- a/infra/conf/transport_internet.go
++++ b/infra/conf/transport_internet.go
+@@ -10,8 +10,8 @@ import (
+ 	"runtime"
+ 	"strconv"
+ 	"strings"
+-	"syscall"
+ 	"time"
++	"github.com/xtls/xray-core/common"
+ 
+ 	"github.com/xtls/xray-core/common/errors"
+ 	"github.com/xtls/xray-core/common/net"
+@@ -726,13 +726,13 @@ func (c *TLSConfig) Build() (proto.Message, error) {
+ 	if c.ALPN != nil && len(*c.ALPN) > 0 {
+ 		config.NextProtocol = []string(*c.ALPN)
+ 	}
+-	if len(config.NextProtocol) > 1 {
+-		for _, p := range config.NextProtocol {
+-			if tls.IsFromMitm(p) {
+-				return nil, errors.New(`only one element is allowed in "alpn" when using "fromMitm" in it`)
+-			}
+-		}
+-	}
++// 	if len(config.NextProtocol) > 1 {
++// 		for _, p := range config.NextProtocol {
++// 			if tls.IsFromMitm(p) {
++// 				return nil, errors.New(`only one element is allowed in "alpn" when using "fromMitm" in it`)
++// 			}
++// 		}
++// 	}
+ 	if c.CurvePreferences != nil && len(*c.CurvePreferences) > 0 {
+ 		config.CurvePreferences = []string(*c.CurvePreferences)
+ 	}
+@@ -866,7 +866,7 @@ func (c *REALITYConfig) Build() (proto.Message, error) {
+ 			case '@', '/':
+ 				c.Type = "unix"
+ 				if s[0] == '@' && len(s) > 1 && s[1] == '@' && (runtime.GOOS == "linux" || runtime.GOOS == "android") {
+-					fullAddr := make([]byte, len(syscall.RawSockaddrUnix{}.Path)) // may need padding to work with haproxy
++					fullAddr := make([]byte, common.RawSockAddrUnixLen) // may need padding to work with haproxy
+ 					copy(fullAddr, s[1:])
+ 					s = string(fullAddr)
+ 				}
+diff --git a/infra/conf/trojan.go b/infra/conf/trojan.go
+index 4a230514..a08a14f4 100644
+--- a/infra/conf/trojan.go
++++ b/infra/conf/trojan.go
+@@ -6,8 +6,8 @@ import (
+ 	"runtime"
+ 	"strconv"
+ 	"strings"
+-	"syscall"
+ 
++	"github.com/xtls/xray-core/common"
+ 	"github.com/xtls/xray-core/common/errors"
+ 	"github.com/xtls/xray-core/common/net"
+ 	"github.com/xtls/xray-core/common/protocol"
+@@ -149,7 +149,7 @@ func (c *TrojanServerConfig) Build() (proto.Message, error) {
+ 			} else if filepath.IsAbs(fb.Dest) || fb.Dest[0] == '@' {
+ 				fb.Type = "unix"
+ 				if strings.HasPrefix(fb.Dest, "@@") && (runtime.GOOS == "linux" || runtime.GOOS == "android") {
+-					fullAddr := make([]byte, len(syscall.RawSockaddrUnix{}.Path)) // may need padding to work with haproxy
++					fullAddr := make([]byte, common.RawSockAddrUnixLen) // may need padding to work with haproxy
+ 					copy(fullAddr, fb.Dest[1:])
+ 					fb.Dest = string(fullAddr)
+ 				}
+diff --git a/infra/conf/vless.go b/infra/conf/vless.go
+index aa410e5c..142736f2 100644
+--- a/infra/conf/vless.go
++++ b/infra/conf/vless.go
+@@ -7,8 +7,8 @@ import (
+ 	"runtime"
+ 	"strconv"
+ 	"strings"
+-	"syscall"
+ 
++	"github.com/xtls/xray-core/common"
+ 	"github.com/xtls/xray-core/common/errors"
+ 	"github.com/xtls/xray-core/common/net"
+ 	"github.com/xtls/xray-core/common/protocol"
+@@ -172,7 +172,7 @@ func (c *VLessInboundConfig) Build() (proto.Message, error) {
+ 			} else if filepath.IsAbs(fb.Dest) || fb.Dest[0] == '@' {
+ 				fb.Type = "unix"
+ 				if strings.HasPrefix(fb.Dest, "@@") && (runtime.GOOS == "linux" || runtime.GOOS == "android") {
+-					fullAddr := make([]byte, len(syscall.RawSockaddrUnix{}.Path)) // may need padding to work with haproxy
++					fullAddr := make([]byte, common.RawSockAddrUnixLen) // may need padding to work with haproxy
+ 					copy(fullAddr, fb.Dest[1:])
+ 					fb.Dest = string(fullAddr)
+ 				}
+diff --git a/proxy/shadowsocks/client.go b/proxy/shadowsocks/client.go
+index c2ad1c1c..71ef74a6 100644
+--- a/proxy/shadowsocks/client.go
++++ b/proxy/shadowsocks/client.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package shadowsocks
+ 
+ import (
+diff --git a/proxy/shadowsocks/protocol.go b/proxy/shadowsocks/protocol.go
+index c992f619..40aa976e 100644
+--- a/proxy/shadowsocks/protocol.go
++++ b/proxy/shadowsocks/protocol.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package shadowsocks
+ 
+ import (
+diff --git a/proxy/shadowsocks/server.go b/proxy/shadowsocks/server.go
+index 360ea38c..f84b0d65 100644
+--- a/proxy/shadowsocks/server.go
++++ b/proxy/shadowsocks/server.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package shadowsocks
+ 
+ import (
+diff --git a/proxy/shadowsocks_2022/inbound.go b/proxy/shadowsocks_2022/inbound.go
+index a889fa0f..2a71621f 100644
+--- a/proxy/shadowsocks_2022/inbound.go
++++ b/proxy/shadowsocks_2022/inbound.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package shadowsocks_2022
+ 
+ import (
+diff --git a/proxy/shadowsocks_2022/inbound_multi.go b/proxy/shadowsocks_2022/inbound_multi.go
+index 4bfa086a..df8096e2 100644
+--- a/proxy/shadowsocks_2022/inbound_multi.go
++++ b/proxy/shadowsocks_2022/inbound_multi.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package shadowsocks_2022
+ 
+ import (
+diff --git a/proxy/shadowsocks_2022/inbound_relay.go b/proxy/shadowsocks_2022/inbound_relay.go
+index 19afd462..0a49313e 100644
+--- a/proxy/shadowsocks_2022/inbound_relay.go
++++ b/proxy/shadowsocks_2022/inbound_relay.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package shadowsocks_2022
+ 
+ import (
+diff --git a/proxy/shadowsocks_2022/outbound.go b/proxy/shadowsocks_2022/outbound.go
+index dd2e4259..9e18e8f6 100644
+--- a/proxy/shadowsocks_2022/outbound.go
++++ b/proxy/shadowsocks_2022/outbound.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package shadowsocks_2022
+ 
+ import (
+diff --git a/proxy/vless/outbound/outbound.go b/proxy/vless/outbound/outbound.go
+index 30b9dcf9..ad714f78 100644
+--- a/proxy/vless/outbound/outbound.go
++++ b/proxy/vless/outbound/outbound.go
+@@ -14,7 +14,6 @@ import (
+ 	"unsafe"
+ 
+ 	utls "github.com/refraction-networking/utls"
+-	proxyman "github.com/xtls/xray-core/app/proxyman/outbound"
+ 	"github.com/xtls/xray-core/app/reverse"
+ 	"github.com/xtls/xray-core/common"
+ 	"github.com/xtls/xray-core/common/buf"
+@@ -460,7 +459,7 @@ func (r *Reverse) monitor() error {
+ 		go func() {
+ 			ctx := session.ContextWithOutbounds(r.ctx, []*session.Outbound{{
+ 				Target: net.Destination{Address: net.DomainAddress("v1.rvs.cool")},
+ 			}})
+-			r.handler.Process(ctx, link2, session.FullHandlerFromContext(ctx).(*proxyman.Handler))
++			r.handler.Process(ctx, link2, nil)
+ 			common.Interrupt(reader1)
+ 			common.Interrupt(reader2)
+ 		}()
+diff --git a/transport/internet/filelocker_other.go b/transport/internet/filelocker_other.go
+index 36d937c1..2ee03fc6 100644
+--- a/transport/internet/filelocker_other.go
++++ b/transport/internet/filelocker_other.go
+@@ -1,5 +1,5 @@
+-//go:build !windows
+-// +build !windows
++//go:build !wasm && !windows
++// +build !wasm,!windows
+ 
+ package internet
+ 
+diff --git a/transport/internet/filelocker_wasm.go b/transport/internet/filelocker_wasm.go
+new file mode 100644
+index 00000000..152df97f
+--- /dev/null
++++ b/transport/internet/filelocker_wasm.go
+@@ -0,0 +1,14 @@
++//go:build wasm
++// +build wasm
++
++package internet
++
++// Acquire lock
++func (fl *FileLocker) Acquire() error {
++	panic("unimplemented")
++}
++
++// Release lock
++func (fl *FileLocker) Release() {
++	panic("unimplemented")
++}
+diff --git a/transport/internet/grpc/dial.go b/transport/internet/grpc/dial.go
+index b8740dae..42f9562a 100644
+--- a/transport/internet/grpc/dial.go
++++ b/transport/internet/grpc/dial.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package grpc
+ 
+ import (
+diff --git a/transport/internet/grpc/hub.go b/transport/internet/grpc/hub.go
+index ae8788fa..48c30f88 100644
+--- a/transport/internet/grpc/hub.go
++++ b/transport/internet/grpc/hub.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package grpc
+ 
+ import (
+diff --git a/transport/internet/httpupgrade/dialer.go b/transport/internet/httpupgrade/dialer.go
+index c10bd97e..cbda04dd 100644
+--- a/transport/internet/httpupgrade/dialer.go
++++ b/transport/internet/httpupgrade/dialer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package httpupgrade
+ 
+ import (
+diff --git a/transport/internet/httpupgrade/hub.go b/transport/internet/httpupgrade/hub.go
+index dc67c747..6ce0a248 100644
+--- a/transport/internet/httpupgrade/hub.go
++++ b/transport/internet/httpupgrade/hub.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package httpupgrade
+ 
+ import (
+diff --git a/transport/internet/kcp/dialer.go b/transport/internet/kcp/dialer.go
+index 0a3968dc..010c6a00 100644
+--- a/transport/internet/kcp/dialer.go
++++ b/transport/internet/kcp/dialer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package kcp
+ 
+ import (
+diff --git a/transport/internet/kcp/listener.go b/transport/internet/kcp/listener.go
+index 71ce6462..60e98c91 100644
+--- a/transport/internet/kcp/listener.go
++++ b/transport/internet/kcp/listener.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package kcp
+ 
+ import (
+diff --git a/transport/internet/splithttp/dialer.go b/transport/internet/splithttp/dialer.go
+index 3f6e9ea3..d8db0226 100644
+--- a/transport/internet/splithttp/dialer.go
++++ b/transport/internet/splithttp/dialer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package splithttp
+ 
+ import (
+diff --git a/transport/internet/splithttp/hub.go b/transport/internet/splithttp/hub.go
+index d161741a..3667b64d 100644
+--- a/transport/internet/splithttp/hub.go
++++ b/transport/internet/splithttp/hub.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package splithttp
+ 
+ import (
+diff --git a/transport/internet/system_listener.go b/transport/internet/system_listener.go
+index 0cb6cd06..a3539d81 100644
+--- a/transport/internet/system_listener.go
++++ b/transport/internet/system_listener.go
+@@ -14,6 +14,7 @@ import (
+ 	"github.com/sagernet/sing/common/control"
+ 	"github.com/xtls/xray-core/common/errors"
+ 	"github.com/xtls/xray-core/common/net"
++	"github.com/xtls/xray-core/common"
+ )
+ 
+ var effectiveListener = DefaultListener{}
+@@ -121,8 +122,9 @@ func (dl *DefaultListener) Listen(ctx context.Context, addr net.Addr, sockopt *S
+ 		if (runtime.GOOS == "linux" || runtime.GOOS == "android") && address[0] == '@' {
+ 			// linux abstract unix domain socket is lockfree
+ 			if len(address) > 1 && address[1] == '@' {
++				// 108 = len(syscall.RawSockaddrUnix{}.Path)
+ 				// but may need padding to work with haproxy
+-				fullAddr := make([]byte, len(syscall.RawSockaddrUnix{}.Path))
++				fullAddr := make([]byte, common.RawSockAddrUnixLen)
+ 				copy(fullAddr, address[1:])
+ 				address = string(fullAddr)
+ 			}
+diff --git a/transport/internet/tcp/dialer.go b/transport/internet/tcp/dialer.go
+index 65bacf3a..82bbd615 100644
+--- a/transport/internet/tcp/dialer.go
++++ b/transport/internet/tcp/dialer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package tcp
+ 
+ import (
+diff --git a/transport/internet/tcp/hub.go b/transport/internet/tcp/hub.go
+index 759dfc35..d109b315 100644
+--- a/transport/internet/tcp/hub.go
++++ b/transport/internet/tcp/hub.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package tcp
+ 
+ import (
+diff --git a/transport/internet/udp/dialer.go b/transport/internet/udp/dialer.go
+index 27f1505a..99a9bce1 100644
+--- a/transport/internet/udp/dialer.go
++++ b/transport/internet/udp/dialer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package udp
+ 
+ import (
+diff --git a/transport/internet/udp/hub.go b/transport/internet/udp/hub.go
+index 08354c43..b438bae2 100644
+--- a/transport/internet/udp/hub.go
++++ b/transport/internet/udp/hub.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package udp
+ 
+ import (
+diff --git a/transport/internet/websocket/dialer.go b/transport/internet/websocket/dialer.go
+index 60330fd7..c6640133 100644
+--- a/transport/internet/websocket/dialer.go
++++ b/transport/internet/websocket/dialer.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package websocket
+ 
+ import (
+diff --git a/transport/internet/websocket/hub.go b/transport/internet/websocket/hub.go
+index feefe2af..740b2c47 100644
+--- a/transport/internet/websocket/hub.go
++++ b/transport/internet/websocket/hub.go
+@@ -1,3 +1,6 @@
++//go:build !wasm
++// +build !wasm
++
+ package websocket
+ 
+ import (

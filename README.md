@@ -1,2 +1,0 @@
-# xray-editor
-xray-editr
