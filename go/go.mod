@@ -1,4 +1,4 @@
-module github.com/mmmray/xray-online
+module github.com/Adam-Sizzler/x-validator
 
 go 1.25.7
 

@@ -8,11 +8,11 @@ export function HeaderWidget() {
     return (
         <StickyHeader className={classes.root} px="md">
             <Group h="100%" justify="space-between">
-                <Title order={3}>Xray Config Monaco Editor</Title>
+                <Title order={3}>X Validator</Title>
 
                 <ActionIcon
                     component="a"
-                    href="https://github.com/Adam-Sizzler/xray-monaco-editor"
+                    href="https://github.com/Adam-Sizzler/x-validator"
                     size="lg"
                     target="_blank"
                     variant="subtle"
