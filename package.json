@@ -1,9 +1,9 @@
 {
-  "name": "xray-monaco-edtitor",
+  "name": "x-validator",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
-  "homepage": "https://v2rs.github.io/xray-editor/",
+  "homepage": "https://adam-sizzler.github.io/x-validator/",
   "scripts": {
     "dev": "vite",
     "build": "NODE_ENV=production tsc && vite build",
